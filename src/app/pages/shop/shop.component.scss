@@ -1,0 +1,24 @@
+.shop-container {
+    padding: 40px 60px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  
+  .item-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 40px; 
+  }
+
+  
+  @media (max-width: 960px) {
+    .item-list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .item-list {
+      grid-template-columns: 1fr;
+    }
+  }
