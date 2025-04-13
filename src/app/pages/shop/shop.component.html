@@ -1,7 +1,7 @@
 <div class="shop-container">
     <div class="item-list">
         @for (item of items; track item.id) {
-            <app-shop-item [item]="item" (addToCartEvent)="onBuy($event)"></app-shop-item>
+            <app-shop-item [item]="item" (addToCartEvent)="onAddToCart($event)"></app-shop-item>
         }
     </div>
 </div>

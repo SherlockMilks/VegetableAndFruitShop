@@ -1,53 +1,80 @@
 .cart-card {
-    height: 100%;
-    display: flex;
-    width: 100%;
-    flex-direction: column;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-    background-color: #f3f2ed;
-    color: #333333;
-  }
+  width: 100%;
+  max-width: 900px;
+  margin: auto;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  background-color: white;
+
+}
 
 mat-card-header {
-    margin-bottom: 20px;
-    color: #388E3C;
-    text-align: center;
-    display: block;  
-    margin-left: auto;
-    margin-right: auto; 
+  justify-content: center;
+  display: flex;
+  margin-bottom: 5px;
 }
 
-mat-card-title{
-    font-weight: bold;
-
+mat-card-title {
+  font-weight: bold;
+  font-size: 24px;
+  color: #2e7d32;
+  text-align: center;
 }
 
-.item-details {
-    text-align: center;
+table{
+  background-color: white;
+}
+
+th, td{
+  text-align: center;
+  padding-top: 3px;
+  color:#333333;
+}
+
+.full-width-table {
+  width: 100%;
+  overflow-x: auto;
+}
+
+mat-form-field.quantity {
+  width: 80px;
+}
+
+
+::ng-deep mat-card img  {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+  display: block;
+  margin: 0 auto;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .button {
-    background-color: #4CAF50 !important;
-    color: #FFF8E1 !important;
-    font-size: 15px;
-    width: 20%; 
-    margin-top: 10px; 
-    margin-bottom: 20px; }
-
+  background-color: #4CAF50 !important;
+  color: #FFF8E1 !important;
+  font-size: 15px;
+  padding: 8px 16px;
+  margin: 16px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 .delete-icon {
-    display: flex !important;
-    justify-content: center !important;
-    margin: 0 auto !important;
-  }
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  margin: 0 auto !important;
+}
 
 .error-message {
-    color: #f44336;
-    margin-bottom: 16px;
+  color: #f44336;
+  margin: 8px 0;
+  text-align: center;
 }
-  
 
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
@@ -55,3 +82,25 @@ input[type=number]::-webkit-outer-spin-button {
   margin: 0;
 }
 
+@media screen and (max-width: 768px) {
+  mat-card-title {
+    font-size: 20px;
+  }
+
+  .button {
+    width: 100%;
+  }
+
+  mat-form-field.quantity {
+    width: 60px;
+  }
+
+  .full-width-table {
+    font-size: 14px;
+  }
+
+  img {
+    max-height: 50px;
+    max-width: 50px;
+  }
+}

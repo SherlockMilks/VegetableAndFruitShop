@@ -28,8 +28,8 @@ export class ShopComponent {
   ];
 
 
-  onBuy(cartItem: CartItem): void {
-    console.log('Item bought:', cartItem);
+  onAddToCart(cartItem: CartItem): void {
+    console.log('Item added to cart:', cartItem);
   }
 
 

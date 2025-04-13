@@ -28,6 +28,7 @@ export class AppComponent {
 
   logout(): void {
     localStorage.setItem('isLoggedIn', 'false');
+    localStorage.removeItem('currentUser');
     this.isLoggedIn = false;
     window.location.href = '/home';
   }

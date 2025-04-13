@@ -66,6 +66,11 @@ export class BasketComponent {
   buy(){
     this.error=''
     if(this.user){
+      if(this.cartItems.length==0){
+        this.error='Empty cart!';
+        return;
+      }
+
       const order:Order={
         orderBy:this.user,
         orderedItems:this.cartItems
