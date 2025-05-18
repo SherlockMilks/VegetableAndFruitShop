@@ -1,36 +1,49 @@
-import { Component } from '@angular/core';
-import { RouterOutlet, RouterLink , Router} from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { RouterOutlet, RouterLink, Router } from '@angular/router';
 import { MenuComponent } from './shared/menu/menu.component';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { NgClass } from '@angular/common';
+import { CommonModule } from '@angular/common';
+import { AuthService } from './shared/services/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, MenuComponent, MatSidenav, MatSidenavModule, MatToolbarModule, MatIconModule, RouterLink, NgClass],
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    MatSidenavModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
+    RouterLink,
+    MenuComponent
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
-  constructor(private router: Router) {}
-  
-  title = 'VegetableAndFruitShop';
+export class AppComponent implements OnInit, OnDestroy {
+  title = 'learnflow';
   isLoggedIn = false;
+  private authSubscription?: Subscription;
 
-  ngOnInit() : void{
-    this.checkLogin()
+  constructor(private authService: AuthService, private router: Router) {}
+
+  ngOnInit(): void {
+    this.authSubscription = this.authService.currentUser.subscribe(user => {
+      this.isLoggedIn = !!user;
+      localStorage.setItem('isLoggedIn', this.isLoggedIn ? 'true' : 'false');
+    });
   }
 
-  checkLogin() : void{
-    this.isLoggedIn=localStorage.getItem('isLoggedIn') === 'true';
+  ngOnDestroy(): void {
+    this.authSubscription?.unsubscribe();
   }
 
   logout(): void {
-    localStorage.setItem('isLoggedIn', 'false');
-    localStorage.removeItem('currentUser');
-    this.isLoggedIn = false;
-    window.location.href = '/home';
+    this.authService.signOut();
   }
 
   onToggleSidenav(sidenav: MatSidenav){
@@ -41,3 +54,5 @@ export class AppComponent {
     return this.router.url.includes(link);
   }
 }
+
+

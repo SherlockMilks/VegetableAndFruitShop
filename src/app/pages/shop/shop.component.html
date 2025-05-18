@@ -1,7 +1,46 @@
 <div class="shop-container">
-    <div class="item-list">
-        @for (item of items; track item.id) {
-            <app-shop-item [item]="item" (addToCartEvent)="onAddToCart($event)"></app-shop-item>
-        }
+    <div class="filter-big-container">
+    <div class="filter-container">
+    <mat-form-field appearance="fill">
+        <mat-label>Maximum price</mat-label>
+        <input matInput type="number" min="1" max="10000" [(ngModel)]="maxPrice"/>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" (click)="filterByPrice()">
+        Filter by price
+    </button>
     </div>
+
+    <div class="filter-container">
+    <mat-form-field appearance="fill">
+        <mat-label>Name</mat-label>
+        <input matInput type="text" [(ngModel)]="name"/>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" (click)="filterByName()">
+        Filter by name
+    </button>
+    </div>
+    </div>
+
+
+    <div class="item-list">
+        @if(items$ | async; as items){
+            @if(items.length>0){
+                @for (item of items; track item.id) {
+                <app-shop-item 
+                [item]="item"
+                [admin_e]="admin_e" 
+                (addToCartEvent)="onAddToCart($event)"
+                (deleteItemEvent)="onDeleteItem($event)"
+                (updateItemEvent)="onUpdateItem($event)"></app-shop-item>
+                }
+            }@else{
+                <p class="error">No products found!</p>
+            }
+    }
+    </div>
+    @if(admin_e){
+        <button mat-raised-button (click)="add()" type="submit" class="addButton">Add a new product</button>
+    }
 </div>

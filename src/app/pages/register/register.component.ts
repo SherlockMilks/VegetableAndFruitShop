@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { User } from '../../shared/model/User';
+import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -37,12 +38,12 @@ export class RegisterComponent {
     address: new FormGroup({
       full_address: new FormControl('', [Validators.required]),
       postal_code: new FormControl('', [Validators.required]),
-    })
+    }),
   });
   
   registerError: Array<string>=[];
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   register(): void {
     this.registerError=[];
@@ -70,21 +71,43 @@ export class RegisterComponent {
 
     if(this.registerError.length!==0) return;
 
-    const newUser: User = {
+    const userData: Partial<User> = {
       name: this.registerForm.value.name || '',
       email: this.registerForm.value.email || '',
-      password: this.registerForm.value.password || '',
       phoneNumber: this.registerForm.value.phoneNumber || '',
-      address: {
+      address:{
         full_adress: this.registerForm.value.address?.full_address || '',
         postal_code: this.registerForm.value.address?.postal_code || ''
-      }
+      },
+      admin_e: false
     };
 
-    console.log('New user:', newUser);
-    console.log('Form value:', this.registerForm.value);
+    const email = this.registerForm.value.email || '';
+    const pw = this.registerForm.value.password || '';
 
-
-    this.router.navigateByUrl('/home');
+    this.authService.signUp(email, pw, userData)
+      .then(userCredential => {
+        console.log('Registration succesful:', userCredential.user);
+        this.authService.signOut().then(() => {
+        this.router.navigateByUrl('/login');
+    });
+      })
+      .catch(error => {
+        console.error('Registration error:', error);
+        
+        switch(error.code) {
+          case 'auth/email-already-in-use':
+            this.registerError.push('This email already in use.');
+            break;
+          case 'auth/invalid-email':
+            this.registerError.push('Invalid email.');
+            break;
+          case 'auth/weak-password':
+            this.registerError.push('The password is too weak. Use at least 6 characters.');
+            break;
+          default:
+            this.registerError.push('An error has occurred during registration. Please try again later.');
+        }
+    });
   }
 }

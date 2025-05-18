@@ -10,6 +10,79 @@
     gap: 40px; 
   }
 
+  mat-form-field {
+    width: 100%;
+    max-width: 300px;
+    margin-right: 20px;
+  }
+
+  .filter-container {
+    display: flex;
+    justify-content: center;  
+    align-items: center;     
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 100%;
+  }
+
+  .filter.big.container{
+    flex-direction: column;
+    display: flex;
+    justify-content: center;  
+    align-items: center;     
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 100%;
+  }
+
+
+  button[mat-raised-button] {
+    background-color: #4CAF50 !important;
+    color: #FFF8E1 !important;
+    font-size: 15px;
+    padding: 16px 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .addButton{
+    margin-top: 30px;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .error{
+    text-align: center;
+    grid-column: 1 / -1;
+    font-size: 18px;
+    color: #f44336; 
+    padding: 20px;
+    margin-top: 20px;
+  }
+
+
+  @media (max-width: 600px) {
+    mat-form-field {
+      max-width: 100%;
+      margin-right: 0;
+      margin-bottom: 15px;
+    }
+
+    button[mat-raised-button]{
+      width: 100%;
+    }
+  } 
+
   
   @media (max-width: 960px) {
     .item-list {

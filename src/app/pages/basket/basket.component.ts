@@ -11,6 +11,7 @@ import { PricePerUnitPipe } from '../../shared/pipes/price-per-unit.pipe';
 import { User } from '../../shared/model/User';
 import { Order } from '../../shared/model/Order';
 import { Router } from '@angular/router';
+import {OrderService} from '../../shared/services/order.service'
 
 @Component({
   selector: 'app-basket',
@@ -21,26 +22,16 @@ import { Router } from '@angular/router';
 export class BasketComponent {
   error: string='';
   user: User | null = JSON.parse(localStorage.getItem('currentUser') || 'null');
+  cartItems: CartItem[] = [];
 
-
-  constructor(private router: Router) {}
-  
+  constructor(private router: Router, private orderService: OrderService) {}
 
   displayedColumns: string[] = ['image', 'name', 'price', 'quantity', 'delete'];
-  cartItems:Array<CartItem>=[
-    {
-      item: {id: 1, name: "Tomato", price: 999, description: "A ripe, red tomato, perfect for salads or sauces.", img: "images/tomatosss.PNG"},
-      amount: 10
-    },
-    {
-      item: {id: 2, name: "Carrot", price: 349, description: "A crunchy and sweet root vegetable, commonly used in soups and salads.", img: "images/carrot.PNG"},
-      amount: 2
-    },
-    {
-      item: {id: 5, name: "Orange", price: 649, description: "A citrus fruit packed with vitamin C, ideal for juicing or eating fresh.", img: "images/orange.PNG"},
-      amount: 21
-    }
-  ]
+
+  ngOnInit(): void {
+    const storedCart = localStorage.getItem('cartItems');
+    this.cartItems = storedCart ? JSON.parse(storedCart) : [];
+  }
 
   onItemAmountChange($event: CartItem):void {
     this.error=''
@@ -53,13 +44,22 @@ export class BasketComponent {
         this.error="Please use a valid number!"
       }
       else{
+        const existingCart = JSON.parse(localStorage.getItem('cartItems') || '[]') as CartItem[];
         this.cartItems[index] = $event;
+        existingCart[index].amount = $event.amount;
+        localStorage.setItem('cartItems', JSON.stringify(existingCart));
       }  
     }
   }
 
   deleteItem(cartItem: CartItem): void {
     this.cartItems = this.cartItems.filter(item => item.item.id !== cartItem.item.id);
+
+    const existingCart = JSON.parse(localStorage.getItem('cartItems') || '[]') as CartItem[];
+    const updatedCart = existingCart.filter(ci => ci.item.id !== cartItem.item.id);
+
+    localStorage.setItem('cartItems', JSON.stringify(updatedCart));
+
     this.error = '';
   }
 
@@ -73,14 +73,17 @@ export class BasketComponent {
 
       const order:Order={
         orderBy:this.user,
-        orderedItems:this.cartItems
+        orderedItems:this.cartItems,
+        orderDate: new Date()
       }
-
       
-    console.log('New order:', order);
-
-    this.router.navigateByUrl('/home');
-    }
+      this.orderService.saveOrder(order)
+      .then(() => console.log('New order:', order))
+      .catch(err => console.error('Error saving order:', err));
+      
+      localStorage.removeItem('cartItems');
+      this.router.navigateByUrl('/profile');
+      }
     else{
       this.error='Sign in to order!'
     }

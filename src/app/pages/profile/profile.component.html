@@ -1,1 +1,62 @@
-<p>profile works!</p>
+<mat-card class="profile-card">
+  <mat-card-header>
+    <mat-card-title>User info</mat-card-title>
+  </mat-card-header>
+
+  @if(user!==null){
+  <mat-card-content>
+    <mat-list>
+      <mat-list-item>
+        <strong>Name:</strong> {{ user.name }}
+      </mat-list-item>
+      <mat-list-item>
+        <strong>Email:</strong> {{ user.email }}
+      </mat-list-item>
+      <mat-list-item>
+        <strong>Phone number:</strong> {{ user.phoneNumber }}
+      </mat-list-item>
+      <mat-list-item>
+        <strong>Address:</strong> {{ user.address.full_adress }}
+      </mat-list-item>
+      <mat-list-item>
+        <strong>Postal number:</strong> {{ user.address.postal_code }}
+      </mat-list-item>
+    @if(user.admin_e){
+      <mat-list-item>
+        <strong>You are an admin!</strong>
+      </mat-list-item>
+    }
+    </mat-list>
+  </mat-card-content>
+    }@else{
+    <p>Error during user loading!</p>
+    }
+</mat-card>
+
+<mat-card class="profile-card">
+  <mat-card-header>
+    <mat-card-title>Orders</mat-card-title>
+  </mat-card-header>
+
+  @if(orders$ | async; as orders){
+    @if (orders && orders.length > 0) {
+    @for (order of orders; track order.orderDate) {
+      <mat-card class="order-card">
+        <mat-card-title>
+          Order Date: {{ order.orderDate | dateFormat}}
+        </mat-card-title>
+        <mat-card-content>
+          <ul>
+            @for (cartItem of order.orderedItems; track cartItem.item.id) {
+              <li>
+                <p>{{ cartItem.item.name }} - {{ cartItem.amount }} kg</p>
+                {{ cartItem.item.price * cartItem.amount}} Ft
+              </li>
+            }
+          </ul>
+        </mat-card-content>
+      </mat-card>}}
+    @else{
+    <p>You haven't ordered anything yet!</p>
+  }}
+</mat-card>

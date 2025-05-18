@@ -1,0 +1,122 @@
+mat-card-header {
+    margin-bottom: 20px;
+    color: #388E3C;
+    text-align: center;
+    display: block;  
+    margin-left: auto;
+    margin-right: auto; 
+}
+
+mat-card-title{
+    font-weight: bold;
+}
+
+.profile-card {
+  max-width: 480px;
+  margin: 2rem auto;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  background-color: #f3f2ed;
+  color: #333333;
+}
+
+strong{
+    color: #388E3C;
+}
+
+
+
+.order-card {
+  margin: 1rem 0;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  overflow: hidden;
+  background: linear-gradient(145deg, #f8fff8, #f0f7f0);
+  border: 2px solid #4CAF50;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(46, 125, 50, 0.15);
+  }
+
+  mat-card-title {
+    padding: 1rem;
+    background: linear-gradient(90deg, #2E7D32, #4CAF50);
+    color: white;
+    font-weight: 500;
+    font-size: 1.1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    letter-spacing: 0.5px;
+  }
+
+  mat-card-content {
+    padding: 1.5rem;
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+        padding: 0.75rem 0;
+        border-bottom: 1px solid #e8f5e9;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 1rem;
+        color: #1B5E20;
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        &::before {
+          content: "🌱";
+          display: inline-block;
+          width: 1em;
+          margin-left: -1em;
+          opacity: 0.7;
+        }
+
+        span.price {
+          font-weight: 600;
+          color: #2E7D32;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .order-card {
+    margin: 0.75rem 0;
+    
+    mat-card-title {
+      font-size: 1rem;
+      padding: 0.75rem;
+    }
+
+    mat-card-content {
+      padding: 1rem;
+      
+      li {
+        font-size: 0.9rem;
+        padding: 0.5rem 0;
+      }
+    }
+  }
+}
+
+
+p.empty-message {
+  text-align: center;
+  padding: 2rem;
+  color: #689F38;
+  font-style: italic;
+  background: #F1F8E9;
+  border-radius: 8px;
+  margin: 1rem 0;
+  border: 1px dashed #C8E6C9;
+}

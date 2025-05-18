@@ -1,6 +1,6 @@
 
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -9,6 +9,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
 import { User } from '../../shared/model/User';
+import { AuthService } from '../../shared/services/auth.service';
+import { UserService } from '../../shared/services/user.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -31,38 +34,54 @@ export class LoginComponent {
   email = new FormControl('');
   password = new FormControl('');
   loginError: Array<string>=[];
+  authSubscription?: Subscription;
 
-  constructor() {}
+  constructor(
+     private authService: AuthService, 
+     private userService: UserService, 
+     private router: Router
+  ) {}
 
   login() {
     this.loginError = [];
 
     if(this.email.value==="" || this.password.value===""){
-
       this.loginError.push('Missing information!');
+      return;
     }
-    else if (this.email.value !== 'test@gmail.com' || this.password.value !== 'test') {
 
-      this.loginError.push('Invalid email or password!');
-    } 
-    else {
-      
-      localStorage.setItem('isLoggedIn', 'true');
+    const emailValue = this.email.value || '';
+    const passwordValue = this.password.value || '';
 
-      
-      const user:User={
-        email: "test@gmail-com",
-        password: "test",
-        name: "Test Jones",
-        phoneNumber: "+36201111111",
-        address:{
-          full_adress: "Magyarország, Szeged, Test Utca 45.",
-          postal_code: "5631"
-        }
+
+    this.authService.signIn(emailValue, passwordValue)
+    .then(userCredential => {
+      console.log('Login successful:', userCredential.user);
+      this.authService.updateLoginStatus(true);
+      this.userService.getCurrentUserData().subscribe(user => {
+      if (user) {
+      console.log('User:', user);
+      localStorage.setItem('currentUser',JSON.stringify(user))
+      }});
+      this.router.navigateByUrl('/home');
+    })
+    .catch(error => {
+      console.error('Login error:', error);
+        
+      switch(error.code) {
+        case 'auth/user-not-found':
+          this.loginError.push('There is no account with this email address!');
+          break;
+        case 'auth/wrong-password':
+          this.loginError.push('The password is incorrect!');
+          break;
+        default:
+          this.loginError.push('Authentication failed. Please try again!');
       }
-      localStorage.setItem('currentUser',JSON.stringify(user));
-      
-      window.location.href = '/home';
-    }
+    });
+  }
+
+    ngOnDestroy() {
+    this.authSubscription?.unsubscribe();
   }
 }

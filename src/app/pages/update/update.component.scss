@@ -1,0 +1,31 @@
+.update-product-container {
+    max-width: 400px;
+    margin: 40px auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    background-color: #f3f2ed;
+  
+    h1 {
+      margin-bottom: 20px;
+      color: #388E3C;
+    }
+  }
+  
+  .product-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .error-message {
+    color: #f44336;
+    margin-bottom: 16px;
+  }
+
+  .button{
+    background-color: #4CAF50 !important;
+    color: #FFF8E1 !important;
+    font-size: 15px;
+  }
